@@ -11,7 +11,7 @@
 
 **You provide to others:** the statistics functions (`isi`, `cv`, `lv`, `fano`, `burst_fraction`, `isi_lag1_corr`; P1 needs them for the validation checks) and `load_raw()`, `clean(df)`, `load_clean()` (P3 builds the whole analysis on them). Publish these first with the agreed names, even before they are polished.
 
-**Notebook sections:** mark your cells with `[P2]`: Q1 sections B and D in `Q1_neural_spikes.ipynb`, and Q2 sections A and B in `Q2_laptop_analysis.ipynb` (they come first, before P3's analysis).
+**Your files (temporary, in `parts/`):** `Q1_part2_analysis.ipynb`, `q1_stats.py` (the statistics functions others import), `Q2_part2_cleaning.ipynb`, `q2_clean.py` (`load_clean()` for Part 3), `ai_log_part2.md`. Mark your cells with `[P2]`. Push straight to `main` (`git pull --rebase` first); never edit other people's files. At integration your cells go into `Q1_neural_spikes.ipynb` (B, D) and the first sections of `Q2_laptop_analysis.ipynb` (A, B).
 
 ## What good looks like
 
@@ -35,4 +35,4 @@ A decision marked "לא הוחלט" is not decided: ask the student, do not pick
 
 ## Your AI log
 
-After each task add an entry to `AI_USAGE.md` under "Part 2": what Claude did, what you decided, how you verified it, what went wrong. Section 9 (the example you challenged) must be yours.
+After each task add an entry to `parts/ai_log_part2.md` (merged into `AI_USAGE.md` at integration): what Claude did, what you decided, how you verified it, what went wrong. Section 9 (the example you challenged) must be yours.

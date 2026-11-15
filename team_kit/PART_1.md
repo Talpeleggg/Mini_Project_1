@@ -12,7 +12,7 @@
 
 **You provide to others:** the three `simulate_*` functions and `make_rngs` (P2 needs them for the analysis and realizations). Agree the signatures with P2 first (see CLAUDE.md contracts), and publish a first working version early, even if the parameters are still provisional.
 
-**Notebook sections:** mark your cells with `[P1]`, in `Q1_neural_spikes.ipynb` (A, C, wrap-up) and the final section of `Q2_laptop_analysis.ipynb` (E).
+**Your files (temporary, in `parts/`):** `Q1_part1_models_validation.ipynb`, `q1_models.py` (the simulation functions others import), `Q2_part1_report.ipynb`, `ai_log_part1.md`. Mark your cells with `[P1]`. Push straight to `main` (`git pull --rebase` first); never edit other people's files. At integration your cells go into `Q1_neural_spikes.ipynb` (A, C, wrap-up) and the last section of `Q2_laptop_analysis.ipynb` (E).
 
 ## What good looks like
 
@@ -37,4 +37,4 @@ A decision marked "לא הוחלט" is not decided: ask the student, do not pick
 
 ## Your AI log
 
-After each task add an entry to `AI_USAGE.md` under "Part 1": what Claude did, what you decided, how you verified it, what went wrong. Section 9 (the example you challenged) must be yours.
+After each task add an entry to `parts/ai_log_part1.md` (merged into `AI_USAGE.md` at integration): what Claude did, what you decided, how you verified it, what went wrong. Section 9 (the example you challenged) must be yours.

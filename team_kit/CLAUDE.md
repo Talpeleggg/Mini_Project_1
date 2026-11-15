@@ -14,7 +14,7 @@ Course: Neuroscience Data Analysis with Python. Mini-Project 1, due **3 December
 ```
 README.md  requirements.txt  Q1_neural_spikes.ipynb  Q2_laptop_analysis.ipynb  AI_USAGE.md  figures/  data/
 ```
-`.gitignore` is a whitelist that enforces this. Never force-add other files (`git add -f`) and never add names to the whitelist without asking the student. The two notebooks must run top to bottom in a clean environment. The whole team's work ends up in these two notebooks.
+`.gitignore` is a whitelist that enforces this. Never force-add other files (`git add -f`) and never add names to the whitelist without asking the student. The two notebooks must run top to bottom in a clean environment. The whole team's work ends up in these two notebooks. **During the work phase the notebooks are NOT edited directly:** each person works in their own files inside the temporary folder `parts/` (map in `parts/README.md`), and at integration the cells are merged into the two final notebooks and `parts/` is deleted.
 
 ## Rules you must follow
 
@@ -22,13 +22,13 @@ README.md  requirements.txt  Q1_neural_spikes.ipynb  Q2_laptop_analysis.ipynb  A
 2. **The student must be able to explain every line.** The assignment says submitting code you cannot explain or validate is not allowed, and any team member may be asked to explain or modify any part during the evaluation. Write short functions with docstrings, explain choices, and after each piece of code give the student two or three questions they should be able to answer. Do not generate large blocks of code in one go.
 3. **Verify, do not assert.** Every number in a report or comment must come from code in the notebook. Several statements on the decision board are hand calculations that have not been verified (see "Unverified claims" in `AI_USAGE.md`). Check them in code before using them.
 4. **Honest AI documentation.** `AI_USAGE.md` is graded. After each task, add a short entry under the student's name: what you did, what the student chose, how it was verified, and any mistake that was found. Never write section 9 (the example the student challenged or corrected) on the student's behalf. Never invent or embellish. Real problems and corrections belong in the log.
-5. **Stay in your own part.** Edit only the notebook sections of your own part (headers are marked `[P1]`, `[P2]`, `[P3]`). Ask before touching anyone else's cells.
-6. **Git workflow.** One branch per student (`p1-...`, `p2-...`, `p3-...`), small commits, a Pull Request that another student reviews before merging into `main`. Before every commit clear notebook outputs: `jupyter nbconvert --clear-output --inplace <notebook>.ipynb`. Do not push to `main` directly. Do not push unless the student asks you to.
+5. **Stay in your own files.** Edit only the files that belong to your part in `parts/` (see the ownership table in `parts/README.md`). Never edit another person's file. The shared files (`README.md`, `AI_USAGE.md`, `requirements.txt`, the two final notebooks) are not edited during the work phase: log your AI use in `parts/ai_log_part<N>.md`. If you need a package, tell the student and add one line to `requirements.txt` after `git pull --rebase`.
+6. **Git workflow (agreed by the team).** Everyone pushes straight to `main`, with no reviewer and no Pull Requests. Because each person only touches their own files there are no conflicts. Before every push run `git pull --rebase`. Before every commit clear notebook outputs: `jupyter nbconvert --clear-output --inplace parts/<name>.ipynb`. Small, frequent commits. Never force-push. Do not push unless the student asks you to. Pushing is limited to the files the `.gitignore` whitelist allows.
 7. **Reproducibility.** Use `numpy.random.default_rng` and `SeedSequence.spawn` (no global `np.random.seed`), relative paths only, figures saved to `figures/` from code, pinned versions in `requirements.txt` (Python 3.14 environment used so far).
 
 ## Interface contracts (DRAFT, confirm after the decisions are made)
 
-All Q1/Q2 code lives inside the two notebooks. Keep these names so that the parts fit together.
+While the team works, these functions live in the helper modules inside `parts/` (`q1_models.py` for Part 1, `q1_stats.py` and `q2_clean.py` for Part 2) so that other parts can `import` them; at integration they are copied into the final notebooks. Keep these names so that the parts fit together.
 
 Q1, section A (owner P1), spike times are 1-D float64 arrays in seconds, strictly increasing, inside `[0, T)`:
 ```python

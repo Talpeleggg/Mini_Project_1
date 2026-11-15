@@ -10,7 +10,7 @@
 
 **You provide to others:** your results to P1, who writes the Q2 report (E) from them. Put key numbers in clearly labelled variables or a small results table so they are easy to quote.
 
-**Notebook sections:** mark your cells with `[P3]`, in `Q2_laptop_analysis.ipynb` (C and D come after P2's cleaning cells). In the final stage you also own the integration of both notebooks.
+**Your files (temporary, in `parts/`):** `Q2_part3_analysis.ipynb` and `ai_log_part3.md`. Mark your cells with `[P3]`. Push straight to `main` (`git pull --rebase` first); never edit other people's files. At integration your cells go into `Q2_laptop_analysis.ipynb` (C and D come after P2's cleaning cells). In the final stage you also run the integration (planned 28.11): paste every part's cells into the two final notebooks, run both from scratch in a fresh environment, merge the AI logs into `AI_USAGE.md`, write the README, and delete `parts/`.
 
 ## What good looks like
 
@@ -33,4 +33,4 @@ A decision marked "לא הוחלט" is not decided: ask the student, do not pick
 
 ## Your AI log
 
-After each task add an entry to `AI_USAGE.md` under "Part 3": what Claude did, what you decided, how you verified it, what went wrong. Section 9 (the example you challenged) must be yours. As integrator, do not remove or soften other people's honest entries.
+After each task add an entry to `parts/ai_log_part3.md` (merged into `AI_USAGE.md` at integration): what Claude did, what you decided, how you verified it, what went wrong. Section 9 (the example you challenged) must be yours. As integrator, do not remove or soften other people's honest entries.
