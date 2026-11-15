@@ -10,3 +10,6 @@
 !figures/**
 !data/
 !data/**
+# TEMPORARY working area, one set of files per person. Deleted at integration, before submission.
+!parts/
+!parts/**
