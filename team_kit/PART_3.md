@@ -24,6 +24,13 @@
 - RAM levels with few laptops (2 GB: 16, 24 GB: 3, 64 GB: 1) need special handling in plots and tests.
 - Brand comparisons: only brands with enough laptops (decision `g_n`).
 
+## Reading your decisions (do this before writing code)
+
+On the board your page is "Part 3" (default name: Ohad). Your own decisions are on that page; the shared ones are on the "shared" page. Two ways to give them to Claude:
+1. On your page press "העתק את ההחלטות שלי ל־Claude" and paste the result in the chat. It contains your tasks, what was decided, what is missing, and the related shared decisions.
+2. If your Claude can read the shared board, read the database collection `dec` of the board artifact (one document per decision id; fields: `choices`, `labels`, `q`, `note`, `owner`, `task`, `by`) and `tasks` (one document per task id; fields: `status`, `part`, `notes`).
+A decision marked "לא הוחלט" is not decided: ask the student, do not pick for them.
+
 ## Your AI log
 
 After each task add an entry to `AI_USAGE.md` under "Part 3": what Claude did, what you decided, how you verified it, what went wrong. Section 9 (the example you challenged) must be yours. As integrator, do not remove or soften other people's honest entries.
