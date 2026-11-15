@@ -1,0 +1,12 @@
+# Whitelist: only files that belong to the submission structure in the assignment
+*
+!.gitignore
+!README.md
+!requirements.txt
+!AI_USAGE.md
+!Q1_neural_spikes.ipynb
+!Q2_laptop_analysis.ipynb
+!figures/
+!figures/**
+!data/
+!data/**
