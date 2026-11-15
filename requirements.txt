@@ -1,8 +1,9 @@
-numpy
-pandas
-scipy
-matplotlib
-seaborn
-jupyter
-nbconvert
-ipykernel
+# Developed and tested with Python 3.14.3
+numpy==2.5.4
+pandas==3.1.1
+scipy==1.18.1
+matplotlib==3.11.2
+seaborn==0.13.2
+jupyter==1.1.1
+nbconvert==7.17.2
+ipykernel==7.4.0
