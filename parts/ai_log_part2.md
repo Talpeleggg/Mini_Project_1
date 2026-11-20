@@ -15,3 +15,12 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **What went wrong or was fixed:** the first version of the variables table sorted the columns alphabetically instead of keeping the file order. Fixed with `reindex(raw.columns)`.
 - **Not verified yet:** a run of the whole notebook in a clean environment (planned for integration).
 - **Hebrew helper comments (requested by the student):** every code cell and `q2_clean.py` now has comments in Hebrew on lines that start with `# HE:`, to help the team understand the code. They must be removed before submission: `parts/strip_he_comments.py` deletes them automatically. It was tested on a scratch copy (33 lines removed, 0 left, the stripped notebook still runs). Added as the final check `f_he` on the board.
+
+### 2026-11-20, task `t_q2a` (Q2 A, data audit), step 2
+
+- **What the AI did:** added sections 3 (data types) and 4 (missing values and duplicates) to `Q2_part2_cleaning.ipynb`, with Hebrew helper comments (`# HE:`).
+- **Decisions applied:** `q_audit` (data types, missing values), `q_dups` (keep and document near-duplicates).
+- **How it was verified:** executed a temporary copy. The count of near-duplicate rows (48) matches the independent check done earlier with a separate script. All numbers quoted in the markdown cells were copied from the executed output.
+- **Observation to check by the student:** the 208 two-drive `Memory` strings are exactly the 208 strings with a double space; confirm this when writing the parser in Q2 B.
+- **Not verified yet:** why the prices differ inside a near-duplicate pair (unknown, stated as such).
+
