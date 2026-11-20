@@ -4,11 +4,11 @@
 
 | Task id | Task | Weight | Depends on decisions (board ids) | Needs from others |
 |---|---|---|---|---|
-| `t_setup` | environment, repo layout, general conventions | 3 | `g_lang g_nb g_figs g_out g_code s_env s_repo` | none |
+| `t_setup` | environment, repo layout, general conventions | 3 | `g_lang g_nb g_figs g_out g_code g_style g_verify s_env s_repo` | none |
 | `t_q1a` | Q1 A: the three spike models | 10 | `a_rate a_reg a_irreg a_refr a_bn a_bi a_bo a_start a_valid a_seed` | none |
 | `t_q1c` | Q1 C: validation checks | 8 | `c_checks c_reps c_crit` | P2's statistics functions (`t_q1b`) |
 | `t_q1int` | Q1 wrap-up: assumptions table, interpretation, clean run | 7 | `d_report` | P2's results (`t_q1d`) |
-| `t_q2e` | Q2 E: short report (observed / supported / cannot conclude) | 8 | `r_form r_struct` | P3's results (`t_q2c`, `t_q2d`) |
+| `t_q2e` | Q2 E: short report (observed / supported / cannot conclude) | 8 | `r_form r_struct r_lim` | P3's results (`t_q2c`, `t_q2d`) |
 
 **You provide to others:** the three `simulate_*` functions and `make_rngs` (P2 needs them for the analysis and realizations). Agree the signatures with P2 first (see CLAUDE.md contracts), and publish a first working version early, even if the parameters are still provisional.
 

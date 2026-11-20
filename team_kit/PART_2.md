@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | `t_q1b` | Q1 B: analysis and comparison (raster, ISI, statistics) | 15 | `b_figs b_axis b_bin b_stats b_thr b_fano` | P1's `simulate_*` functions (`t_q1a`) |
 | `t_q1d` | Q1 D: new realizations, stability, how to tell patterns apart | 7 | `d_n d_props d_plot d_cls d_dur` | your own Q1 B |
-| `t_q2a` | Q2 A: data audit | 5 | `q_data q_dups q_issues` | none |
+| `t_q2a` | Q2 A: data audit | 5 | `q_data q_dups q_issues q_audit` | none |
 | `t_q2b` | Q2 B: cleaning and new variables, with validation | 5 | `os_map st_type st_extra rare validate` | `t_q2a` |
 
 **You provide to others:** the statistics functions (`isi`, `cv`, `lv`, `fano`, `burst_fraction`, `isi_lag1_corr`; P1 needs them for the validation checks) and `load_raw()`, `clean(df)`, `load_clean()` (P3 builds the whole analysis on them). Publish these first with the agreed names, even before they are polished.

@@ -4,7 +4,7 @@
 
 | Task id | Task | Weight | Depends on decisions (board ids) | Needs from others |
 |---|---|---|---|---|
-| `t_q2c` | Q2 C: analytical questions (RAM vs price is required) | 22 | `qs tr ram_rep ram_m viz g_test g_n` | P2's `load_clean()` (`t_q2b`) |
+| `t_q2c` | Q2 C: analytical questions (RAM vs price is required) | 22 | `qs tr ram_rep ram_m viz g_test g_n q_tpl` | P2's `load_clean()` (`t_q2b`) |
 | `t_q2d` | Q2 D: outliers | 5 | `o_def o_other o_treat` | P2's cleaned data |
 | `t_final` | README, merged AI_USAGE, clean-environment run, structure check | 8 | `s_ai s_dec s_readme s_final` | everyone's parts |
 
