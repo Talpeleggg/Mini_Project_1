@@ -33,3 +33,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Observation to check by the student:** the 3 Lenovo B51-80 rows ("1008GB" in the name, "1.0TB Hybrid" in `Memory`) are a unit convention, not a contradiction. Look at them in the data yourself.
 - **Not verified:** the plausible ranges are our own assumptions about typical laptops, not taken from a source.
 
+### 2026-11-21, task `t_q2a` (Q2 A, data audit), step 4 (audit complete)
+
+- **What the AI did:** added section 7 (rare categories, the issues register, the audit summary) and fixed a cross-reference in the header table (the register is in section 7, not 6).
+- **Decisions applied:** `q_issues` (what we fix and what we only document), `rare` (group rare categories in a helper column, never delete rows), `q_dups`, `q_audit`.
+- **How it was verified:** executed a temporary copy; the issues register builds every number from code (f-strings), so no number in the register is typed by hand. The rare-category counts were read from the output (11 of 19 companies below 10 laptops, 51 rows).
+- **Not verified:** the threshold of 10 laptops for "rare" is our choice for the audit; the board decision `g_n` uses a different minimum (20) for group comparisons. They answer different questions.
+- **Status:** Q2 A is complete. The next task is Q2 B (cleaning), which produces `load_clean()` for Part 3.
+
