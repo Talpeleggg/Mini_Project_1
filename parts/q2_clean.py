@@ -110,3 +110,55 @@ def parse_memory_series(memory):
     # HE: apply מפעילה את הפונקציה על כל ערך בעמודה. התוצאה היא רשימה של שלישיות, שהופכות לטבלה בת שלוש עמודות.
     parsed = [parse_memory(m) for m in memory]
     return pd.DataFrame(parsed, columns=["Storage_type", "Storage_GB_total", "has_SSD"], index=memory.index)
+
+
+# HE: --------------------------------------------------------------------------
+# HE: עמודות המסך, המעבד, המחיר וכרטיס המסך (החלטה st_extra). כל פונקציה מקבלת עמודה (Series) ומחזירה עמודה חדשה.
+# HE: --------------------------------------------------------------------------
+import numpy as np
+
+CPU_TIERS = ["Core i3", "Core i5", "Core i7", "Other"]
+DEDICATED_GPU_COMPANIES = ["Nvidia", "AMD"]
+KNOWN_GPU_COMPANIES = ["Intel", "Nvidia", "AMD", "ARM"]
+
+
+def screen_pixels(resolution):
+    """Number of pixels (width x height) taken from the end of the ScreenResolution text."""
+    # HE: הרזולוציה (למשל 1920x1080) נמצאת תמיד בסוף המחרוזת. \s*$ אומר "אולי רווחים ואז סוף המחרוזת".
+    # HE: extract שולפת את שני המספרים (רוחב וגובה) לשתי עמודות.
+    width_height = resolution.str.extract(r"(\d+)x(\d+)\s*$").astype(float)
+    assert width_height.notna().all().all(), "a ScreenResolution without a WxH resolution at the end"
+    # HE: פיקסלים = רוחב כפול גובה.
+    return (width_height[0] * width_height[1]).astype(int)
+
+
+def has_touchscreen(resolution):
+    """True when the ScreenResolution text mentions a touchscreen."""
+    # HE: regex=False אומר "חפש את הטקסט כמו שהוא".
+    return resolution.str.contains("Touchscreen", regex=False)
+
+
+def cpu_tier(cpu_type):
+    """Processor tier: Core i3 / Core i5 / Core i7, and Other for everything else."""
+    # HE: לוקחים את תחילת השם אם הוא "Core i" ואחריו 3, 5, 7 או 9. מה שלא מתחיל כך (Celeron, Pentium, AMD...) הופך ל-Other.
+    tier = cpu_type.str.extract(r"^(Core i[3579])")[0].fillna("Other")
+    # HE: אם יופיע Core i9, הוא לא ברשימה המותרת וניעצר, כדי שנחליט במפורש מה עושים איתו.
+    unexpected = sorted(set(tier) - set(CPU_TIERS))
+    assert not unexpected, f"unexpected CPU tiers: {unexpected}"
+    return tier
+
+
+def log_price(price):
+    """Natural logarithm of the price in euro (the price must be positive)."""
+    assert (price > 0).all(), "log needs positive prices"
+    return np.log(price)
+
+
+def dedicated_gpu(gpu_company):
+    """True for a Nvidia or AMD graphics card, False for Intel or ARM (integrated graphics).
+
+    This is an approximation by company: some AMD cards are integrated graphics. It is stated as a limitation.
+    """
+    unknown = sorted(set(gpu_company) - set(KNOWN_GPU_COMPANIES))
+    assert not unknown, f"unknown GPU companies: {unknown}"
+    return gpu_company.isin(DEDICATED_GPU_COMPANIES)

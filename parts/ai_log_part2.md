@@ -57,3 +57,12 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Student's choices to confirm:** `Flash Storage` is not counted as an SSD (our reading, see the notebook); 1 TB = 1000 GB (the three Lenovo B51-80 rows show a 1,008 GB convention).
 - **Not verified yet:** `clean()` and `load_clean()` (step B5).
 
+### 2026-11-21, task `t_q2b` (Q2 B, cleaning), step B3: screen, CPU, price, GPU
+
+- **What the AI did:** added `screen_pixels`, `has_touchscreen`, `cpu_tier`, `log_price` and `dedicated_gpu` to `q2_clean.py`, and section 3 of Q2 B to the notebook (new columns, counts, validation, tests), with Hebrew helper comments.
+- **Decisions applied:** `st_extra` (the five variables), `tr` (log price), `validate`.
+- **What the student decided:** before the code was written the student was told that `Dedicated_GPU` is an approximation by company (some AMD cards are integrated graphics) and chose to keep the decision and document the approximation as a limitation.
+- **How it was verified:** all asserts pass (no new missing values, same number of rows, positive pixels, `exp(log_price)` equals the price); the counts agree with the audit (188 touchscreens); small tests on known inputs pass, including that an unknown GPU company is rejected; skewness 1.51 falls to -0.18, matching the value computed earlier with another library.
+- **Limitations written to the report skeleton:** `Dedicated_GPU` by company; the mixed `Other` processor group; the 1 TB = 1000 GB convention.
+- **Not verified yet:** `clean()` and `load_clean()` (step B5).
+
