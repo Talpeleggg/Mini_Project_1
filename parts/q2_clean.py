@@ -61,3 +61,52 @@ def clean_opsys(opsys):
     unmapped = sorted(clean[family.isna()].unique())
     assert not unmapped, f"operating systems without a family: {unmapped}"
     return clean, family
+
+
+# HE: --------------------------------------------------------------------------
+# HE: פירוק עמודת Memory (החלטות st_type ו-st_extra): מחרוזת כמו "128GB SSD +  1TB HDD" מכילה כונן אחד או שניים,
+# HE: ולכל כונן יש קיבולת (GB או TB) וסוג (SSD, HDD, Flash Storage, Hybrid). אנחנו מחלצים מהמחרוזת:
+# HE: Storage_type (תווית שילוב), Storage_GB_total (קיבולת כוללת) ו-has_SSD (האם יש SSD).
+# HE: --------------------------------------------------------------------------
+import re
+
+# HE: ביטוי רגולרי (regex) שמתאר כונן אחד: מספר (אולי עם נקודה עשרונית), יחידה (GB או TB), רווח, וסוג כונן.
+# HE: \d+ = ספרה אחת או יותר. (?:\.\d+)? = אולי נקודה וספרות. \s* = אפס רווחים או יותר. (GB|TB) = אחת משתי היחידות.
+DRIVE_PATTERN = re.compile(r"(\d+(?:\.\d+)?)\s*(GB|TB)\s+(SSD|HDD|Flash Storage|Hybrid)")
+
+# HE: סדר קבוע לתווית: כך "SSD + HDD" תמיד נכתב באותו סדר, ולא פעם "HDD + SSD".
+STORAGE_ORDER = ["SSD", "HDD", "Flash Storage", "Hybrid"]
+
+# HE: הנחה שלנו (החלטה st_extra): 1 TB = 1000 GB (כך משווקים כוננים), ולא 1024.
+GB_PER_TB = 1000
+
+
+def parse_memory(memory):
+    """Parse one `Memory` string.
+
+    Returns (storage_type, total_gb, has_ssd). The storage type is a canonical label of the drive types
+    that are present, in a fixed order, for example "SSD + HDD". Two drives of the same type give one type
+    ("SSD") and their capacities are added. Raises AssertionError for text it does not understand.
+    """
+    # HE: findall מחזירה רשימה של כל הכוננים שנמצאו, כל כונן כשלישייה (מספר, יחידה, סוג).
+    drives = DRIVE_PATTERN.findall(memory)
+    assert drives, f"cannot parse Memory string: {memory!r}"
+    # HE: בודקים שלא נשאר בטקסט שום דבר שלא הבנו: מוחקים את הכוננים שנמצאו, ואת סימן ה-+ ואת הרווחים,
+    # HE: ומה שנשאר חייב להיות ריק. כך נתפוס פורמט חדש שלא צפינו.
+    leftover = DRIVE_PATTERN.sub("", memory).replace("+", "").strip()
+    assert leftover == "", f"unrecognised text {leftover!r} in Memory string: {memory!r}"
+
+    # HE: קבוצה (set) של סוגי הכוננים שמופיעים. אם יש שני SSD, הסוג SSD מופיע פעם אחת בקבוצה.
+    types = {drive_type for _, _, drive_type in drives}
+    # HE: בונים את התווית לפי הסדר הקבוע, ומחברים עם " + ".
+    storage_type = " + ".join(t for t in STORAGE_ORDER if t in types)
+    # HE: קיבולת כוללת: מחברים את כל הכוננים, ומכפילים ב-1000 כשהיחידה היא TB.
+    total_gb = sum(float(value) * (GB_PER_TB if unit == "TB" else 1) for value, unit, _ in drives)
+    return storage_type, total_gb, "SSD" in types
+
+
+def parse_memory_series(memory):
+    """Apply `parse_memory` to a whole column. Returns a DataFrame with Storage_type, Storage_GB_total, has_SSD."""
+    # HE: apply מפעילה את הפונקציה על כל ערך בעמודה. התוצאה היא רשימה של שלישיות, שהופכות לטבלה בת שלוש עמודות.
+    parsed = [parse_memory(m) for m in memory]
+    return pd.DataFrame(parsed, columns=["Storage_type", "Storage_GB_total", "has_SSD"], index=memory.index)

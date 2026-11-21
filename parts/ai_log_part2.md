@@ -48,3 +48,12 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **How it was verified:** the cross-tabulation shows that exactly the 8 `Mac OS X` rows changed; the asserts check the row count, no new missing values, one clean name per raw name, and that the alias is gone. A small test checks the function on known input and that an unknown operating system is rejected.
 - **Not verified yet:** the whole `clean()` and `load_clean()` (steps B2 to B5).
 
+### 2026-11-21, task `t_q2b` (Q2 B, cleaning), step B2: storage
+
+- **What the AI did:** added `parse_memory()` and `parse_memory_series()` to `q2_clean.py`, and section 2 of Q2 B to the notebook (mapping table of all 39 strings, counts, a capacity check in a second way, tests), with Hebrew helper comments.
+- **Decisions applied:** `st_type` (canonical combination label), `st_extra` (`Storage_GB_total` with 1 TB = 1000 GB, `has_SSD`), `validate` (capacity in two ways).
+- **How it was verified:** the two capacity computations agree for all 1,275 rows; the 39-row mapping table was inspected; the counts agree with the audit (10 Hybrid, 71 Flash Storage, 208 two-drive strings).
+- **A mistake of the AI, found by a test:** the first test expected `Flash Storage + HDD`, but the fixed order of the label gives `HDD + Flash Storage`. The test failed, the AI checked, and fixed the test expectation (the function was right). This is a candidate example for section 9 of `AI_USAGE.md`, to be confirmed by the student.
+- **Student's choices to confirm:** `Flash Storage` is not counted as an SSD (our reading, see the notebook); 1 TB = 1000 GB (the three Lenovo B51-80 rows show a 1,008 GB convention).
+- **Not verified yet:** `clean()` and `load_clean()` (step B5).
+
