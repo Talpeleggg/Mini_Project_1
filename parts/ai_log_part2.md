@@ -97,3 +97,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **How it was verified:** the stand-ins give strictly increasing times inside the recording and mean rates between 9.7 and 10.8 Hz (the bursting one is a little above 10: it is only a stand-in); the AI looked at both figures.
 - **To replace:** the `STAND-IN` cell with `q1_models.simulate_*` when Part 1 delivers them.
 
+### 2026-11-21, task `t_q1b` (Q1 B, analysis), step 3: rate, return map, threshold curve, Fano curve
+
+- **What the AI did:** added four figures to the part notebook (rate in 100 ms bins, return map, short-interval threshold curve 2 to 30 ms, Fano curve over window sizes 10 ms to 10 s), still on the stand-in neurons.
+- **Decisions applied:** `b_bin`, `b_figs`, `b_thr` (curve), `b_fano` (curve).
+- **How it was verified:** assertions on the data (regular neuron has 0 short intervals at 10 ms, bursting more than 0.5, random close to the theoretical 0.095; Fano at 1 s below 0.3 for regular, near 1 for random, above 2 for bursting); the AI looked at all four figures.
+- **What was changed after looking:** the first return map had axes stretched down to 1e-6 by a few extreme stand-in intervals, so the axes were limited to 1 ms to 3 s.
+- **Not done yet:** a comparison figure on shared axes, the diagram of how each neuron is built, the numbers table, and re-running everything on Part 1's simulation.
+
