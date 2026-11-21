@@ -74,3 +74,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Observation for the student to understand:** after merging `Mac OS X` into `macOS` the rare operating-system labels drop from 3 (18 rows) to 2 (10 rows), so the order of cleaning matters.
 - **Not verified yet:** `clean()` and `load_clean()` (step B5).
 
+### 2026-11-21, task `t_q2b` (Q2 B, cleaning), step B5: `clean()` and `load_clean()`
+
+- **What the AI did:** added `clean()`, `load_clean()` and `COLUMN_DICTIONARY` to `q2_clean.py`, and section 5 of Q2 B to the notebook (final validation, 15-row spot check, data dictionary, fresh-process test), with Hebrew helper comments.
+- **Decisions applied:** `validate` (all four kinds of check), `st_extra`, `rare`, `q_dups`, `q_issues`.
+- **How it was verified:** the function returns exactly the table built step by step (`assert_frame_equal`), the 15 original columns equal the source, the raw table is unchanged, no missing values in the new columns, and `load_clean()` returns (1275, 32) in a fresh Python process. The 15-row spot check was read by the AI and looks consistent.
+- **To be done by the student:** repeat the spot check by hand on 2 or 3 of the 15 rows against the file `data/laptop_price_dataset.csv` (the row number in the notebook plus 2 is the line number in the file). This is the main manual check and it is not done by the AI.
+- **Status:** Q2 A and Q2 B are complete, and Part 3 can use `load_clean()` from `parts/q2_clean.py`.
+

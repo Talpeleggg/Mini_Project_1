@@ -204,3 +204,67 @@ def flag_suspicious(df):
     """
     per_rule = pd.DataFrame({name: rule(df) for name, rule in SUSPICIOUS_RULES.items()})
     return per_rule.any(axis=1), per_rule
+
+
+# HE: --------------------------------------------------------------------------
+# HE: הפונקציה הראשית: clean מחברת את כל הצעדים שבנינו (B1 עד B4) לקריאה אחת, ו-load_clean קוראת ומנקה יחד.
+# HE: אוהד (חלק 3) משתמש רק ב-load_clean. שמות העמודות החדשות הם "חוזה" מולו: לא משנים בלי להודיע.
+# HE: --------------------------------------------------------------------------
+def clean(df):
+    """Return a new, cleaned table. The input table is never changed.
+
+    The cleaned table has all the original columns, unchanged, followed by the new columns listed in
+    `COLUMN_DICTIONARY`. No row is removed.
+    """
+    # HE: מתחילים בעותק, כדי שהטבלה שקיבלנו לא תשתנה. את רשימת העמודות המקוריות שומרים לפני שמוסיפים חדשות.
+    out = df.copy()
+    original_columns = list(df.columns)
+
+    # HE: B1: מערכת הפעלה
+    out["OpSys_clean"], out["OS_family"] = clean_opsys(out["OpSys"])
+    # HE: B2: אחסון (שלוש עמודות בבת אחת)
+    out = pd.concat([out, parse_memory_series(out["Memory"])], axis=1)
+    # HE: B3: מסך, מעבד, מחיר וכרטיס מסך
+    out["Screen_pixels"] = screen_pixels(out["ScreenResolution"])
+    out["Touchscreen"] = has_touchscreen(out["ScreenResolution"])
+    out["CPU_tier"] = cpu_tier(out["CPU_Type"])
+    out["log_price"] = log_price(out["Price (Euro)"])
+    out["Dedicated_GPU"] = dedicated_gpu(out["GPU_Company"])
+    # HE: B4: קיבוץ נדירים בעמודות עזר
+    out["Company_grouped"] = group_rare(out["Company"])
+    out["OpSys_grouped"] = group_rare(out["OpSys_clean"])
+    out["CPU_Company_grouped"] = group_rare(out["CPU_Company"])
+    out["GPU_Company_grouped"] = group_rare(out["GPU_Company"])
+    out["Storage_type_grouped"] = group_rare(out["Storage_type"], label="Other storage")
+    # HE: B4: סימונים. key_cols הם רק העמודות המקוריות חוץ מהמחיר (log_price נגזר מהמחיר, ולכן לא נכלל).
+    key_cols = [c for c in original_columns if c != "Price (Euro)"]
+    out["near_duplicate"] = flag_near_duplicates(out, key_cols)
+    out["suspicious"], _ = flag_suspicious(out)
+    return out
+
+
+def load_clean(path=None):
+    """Read the dataset and return the cleaned table in one call."""
+    return clean(load_raw(path))
+
+
+# HE: מילון העמודות החדשות: לכל עמודה, מה היא ואיזו החלטה בלוח יצרה אותה.
+COLUMN_DICTIONARY = {
+    "OpSys_clean": ("operating system with aliases merged (Mac OS X is macOS)", "os_map"),
+    "OS_family": ("operating system family (Windows, macOS, Linux, Chrome OS, Android, No OS)", "os_map"),
+    "Storage_type": ("combination of drive types, for example SSD + HDD", "st_type"),
+    "Storage_GB_total": ("total storage capacity in GB (1 TB = 1000 GB)", "st_extra"),
+    "has_SSD": ("True when the laptop has an SSD (Flash Storage does not count)", "st_extra"),
+    "Screen_pixels": ("screen width times height in pixels", "st_extra"),
+    "Touchscreen": ("True when the screen is a touchscreen", "st_extra"),
+    "CPU_tier": ("Core i3, Core i5, Core i7 or Other", "st_extra"),
+    "log_price": ("natural logarithm of the price in euro", "st_extra, tr"),
+    "Dedicated_GPU": ("True for a Nvidia or AMD graphics card (approximation by company)", "st_extra"),
+    "Company_grouped": ("company, with companies below 10 laptops grouped as Other", "rare"),
+    "OpSys_grouped": ("operating system, rare ones grouped as Other", "rare"),
+    "CPU_Company_grouped": ("processor company, rare ones grouped as Other", "rare"),
+    "GPU_Company_grouped": ("graphics company, rare ones grouped as Other", "rare"),
+    "Storage_type_grouped": ("storage type, rare combinations grouped as Other storage", "st_type, rare"),
+    "near_duplicate": ("True when another row has the same configuration with a different price", "q_dups"),
+    "suspicious": ("True when a row breaks a plausibility rule (flagged, never removed)", "q_issues"),
+}
