@@ -90,3 +90,10 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **What went wrong:** the first test failed because a regular spike train built with `np.arange(0, 10, 0.1)` has rounding noise, so its standard deviation is not exactly 0 and the serial correlation was a number instead of `nan`. The function was changed to treat a tiny variance as zero.
 - **Not done yet:** the figures (need the simulation of Part 1) and the comparison of the three neurons.
 
+### 2026-11-21, task `t_q1b` (Q1 B, analysis), step 2: stand-in neurons, raster, ISI histograms
+
+- **What the AI did:** wrote three temporary stand-in generators (regular, random, bursting; 10 Hz) inside the part notebook, marked `STAND-IN`, because Part 1's simulation is not delivered yet; built the raster and the log-axis ISI histograms.
+- **Decisions applied:** `b_figs` (raster, histogram), `b_axis` (log), `a_rate` (10 Hz).
+- **How it was verified:** the stand-ins give strictly increasing times inside the recording and mean rates between 9.7 and 10.8 Hz (the bursting one is a little above 10: it is only a stand-in); the AI looked at both figures.
+- **To replace:** the `STAND-IN` cell with `q1_models.simulate_*` when Part 1 delivers them.
+
