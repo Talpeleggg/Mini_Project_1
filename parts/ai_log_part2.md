@@ -82,3 +82,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **To be done by the student:** repeat the spot check by hand on 2 or 3 of the 15 rows against the file `data/laptop_price_dataset.csv` (the row number in the notebook plus 2 is the line number in the file). This is the main manual check and it is not done by the AI.
 - **Status:** Q2 A and Q2 B are complete, and Part 3 can use `load_clean()` from `parts/q2_clean.py`.
 
+### 2026-11-21, task `t_q1b` (Q1 B, analysis), step 1: statistics functions
+
+- **What the AI did:** wrote `isi`, `mean_rate`, `mean_isi`, `cv`, `lv`, `cv2`, `isi_lag1_corr`, `burst_fraction`, `burst_curve`, `window_counts`, `fano`, `fano_curve`, `rate_over_time` in `q1_stats.py`, and tests in `Q1_part2_analysis.ipynb`.
+- **Decisions applied (student chose the recommended option for all):** `b_figs`, `b_axis` (log), `b_bin` (100 ms), `b_stats` (all seven), `b_thr` (curve), `b_fano` (curve).
+- **How it was verified:** cases computed by hand, a perfectly regular neuron, a random neuron (CV, LV, Fano about 1), and edge cases returning `nan`.
+- **What went wrong:** the first test failed because a regular spike train built with `np.arange(0, 10, 0.1)` has rounding noise, so its standard deviation is not exactly 0 and the serial correlation was a number instead of `nan`. The function was changed to treat a tiny variance as zero.
+- **Not done yet:** the figures (need the simulation of Part 1) and the comparison of the three neurons.
+
