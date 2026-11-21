@@ -41,3 +41,10 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Not verified:** the threshold of 10 laptops for "rare" is our choice for the audit; the board decision `g_n` uses a different minimum (20) for group comparisons. They answer different questions.
 - **Status:** Q2 A is complete. The next task is Q2 B (cleaning), which produces `load_clean()` for Part 3.
 
+### 2026-11-21, task `t_q2b` (Q2 B, cleaning), step B1: operating system
+
+- **What the AI did:** added `clean_opsys()` to `q2_clean.py` and the header and section 1 of Q2 B to `Q2_part2_cleaning.ipynb`, with Hebrew helper comments (`# HE:`).
+- **Decision applied:** `os_map` (merge only true aliases, add `OS_family`), and `validate` (cross-tabulation, asserts).
+- **How it was verified:** the cross-tabulation shows that exactly the 8 `Mac OS X` rows changed; the asserts check the row count, no new missing values, one clean name per raw name, and that the alias is gone. A small test checks the function on known input and that an unknown operating system is rejected.
+- **Not verified yet:** the whole `clean()` and `load_clean()` (steps B2 to B5).
+

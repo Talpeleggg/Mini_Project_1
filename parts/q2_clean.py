@@ -31,3 +31,33 @@ def load_raw(path=None):
     # HE: בכוונה לא משנים כלום בקריאה: לא מוחקים שורות ולא מתקנים ערכים. הנתונים הגולמיים
     # HE: נשארים כמו שהם, כדי שנוכל תמיד להשוות מול המקור.
     return pd.read_csv(path or DATA_PATH)
+
+
+# HE: --------------------------------------------------------------------------
+# HE: ניקוי מערכת ההפעלה (החלטה os_map): מאחדים רק כינויים של אותה מערכת, ומוסיפים עמודת "משפחה".
+# HE: --------------------------------------------------------------------------
+# HE: מילון כינויים: "Mac OS X" ו-"macOS" הן אותה מערכת בשני שמות, ולכן ממפים אחת לשנייה.
+OS_ALIASES = {"Mac OS X": "macOS"}
+
+# HE: מילון משפחות: Windows 10, Windows 7 ו-Windows 10 S הן גרסאות שונות (מוצרים שונים), ולכן נשארות נפרדות
+# HE: בעמודה OpSys_clean, אבל מקובצות יחד לעמודה OS_family כשצריך קבוצות גדולות.
+OS_FAMILY = {
+    "Windows 10": "Windows", "Windows 7": "Windows", "Windows 10 S": "Windows",
+    "macOS": "macOS", "Linux": "Linux", "Chrome OS": "Chrome OS", "Android": "Android", "No OS": "No OS",
+}
+
+
+def clean_opsys(opsys):
+    """Unify aliases of the same operating system and add the OS family.
+
+    Returns (OpSys_clean, OS_family) as two Series with the same index as the input.
+    Only true aliases are merged: Windows versions are different products and stay separate.
+    """
+    # HE: replace מחליפה ערכים לפי המילון. ערכים שלא במילון נשארים כמו שהם.
+    clean = opsys.replace(OS_ALIASES)
+    # HE: map מחליפה כל ערך בערך המתאים לו במילון. ערך שחסר במילון הופך ל-NaN.
+    family = clean.map(OS_FAMILY)
+    # HE: אם יש NaN במשפחה, פירושו שמצאנו שם מערכת חדש שלא הכרנו. עוצרים במקום להמשיך בשקט.
+    unmapped = sorted(clean[family.isna()].unique())
+    assert not unmapped, f"operating systems without a family: {unmapped}"
+    return clean, family
