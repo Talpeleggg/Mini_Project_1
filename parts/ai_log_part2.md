@@ -66,3 +66,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Limitations written to the report skeleton:** `Dedicated_GPU` by company; the mixed `Other` processor group; the 1 TB = 1000 GB convention.
 - **Not verified yet:** `clean()` and `load_clean()` (step B5).
 
+### 2026-11-21, task `t_q2b` (Q2 B, cleaning), step B4: rare categories and flags
+
+- **What the AI did:** added `group_rare()`, `flag_near_duplicates()` and `flag_suspicious()` to `q2_clean.py`, and section 4 of Q2 B to the notebook, with Hebrew helper comments.
+- **Decisions applied:** `rare` (helper columns, no row deleted), `st_type` (rare storage combinations grouped in the analysis only), `q_dups` and `q_issues` (flag, keep).
+- **How it was verified:** no row was lost; every kept category in a helper column has at least 10 laptops; the number of rows in `Other` equals the number computed directly without the function; the flags are identical to the independent computations in the audit (`near_dup_mask`, `any_flag`). Tests on small inputs pass, including that a real category called `Other` is rejected.
+- **Observation for the student to understand:** after merging `Mac OS X` into `macOS` the rare operating-system labels drop from 3 (18 rows) to 2 (10 rows), so the order of cleaning matters.
+- **Not verified yet:** `clean()` and `load_clean()` (step B5).
+

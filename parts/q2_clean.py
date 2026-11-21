@@ -162,3 +162,45 @@ def dedicated_gpu(gpu_company):
     unknown = sorted(set(gpu_company) - set(KNOWN_GPU_COMPANIES))
     assert not unknown, f"unknown GPU companies: {unknown}"
     return gpu_company.isin(DEDICATED_GPU_COMPANIES)
+
+
+# HE: --------------------------------------------------------------------------
+# HE: קטגוריות נדירות וסימונים (החלטות rare, q_dups, q_issues). לא מוחקים אף שורה: רק מוסיפים עמודות עזר.
+# HE: --------------------------------------------------------------------------
+RARE_MIN_COUNT = 10   # HE: קטגוריה עם פחות מ-10 מחשבים נחשבת נדירה (אותו סף כמו בביקורת)
+
+
+def group_rare(series, min_count=RARE_MIN_COUNT, label="Other"):
+    """Replace categories with fewer than `min_count` rows by `label`. Returns a new Series; no row is removed."""
+    # HE: value_counts סופרת כמה מחשבים בכל קטגוריה. rare היא רשימת הקטגוריות שמתחת לסף.
+    counts = series.value_counts()
+    rare = counts[counts < min_count].index
+    # HE: אם התווית "Other" כבר קיימת כקטגוריה אמיתית, הקיבוץ היה מערבב אותה איתה. עוצרים.
+    assert label not in set(series.unique()), f"{label!r} is already a category of this column"
+    # HE: where משאירה את הערך כשהתנאי נכון, ומחליפה בתווית כשהוא לא. כאן: משאירים קטגוריות שאינן נדירות.
+    return series.where(~series.isin(rare), label)
+
+
+def flag_near_duplicates(df, key_cols):
+    """True for every row that shares all of `key_cols` with another row (here: every column except the price)."""
+    # HE: keep=False מסמנת את כל השורות בקבוצה, ולא רק את הכפולה.
+    return df.duplicated(subset=key_cols, keep=False)
+
+
+# HE: כללי הגיון (אותם חמישה כללים מהביקורת): כל כלל הוא פונקציה שמקבלת את הטבלה ומחזירה True/False לכל שורה.
+SUSPICIOUS_RULES = {
+    "small screen (<=13.3 in) but heavy (>2.5 kg)": lambda d: (d["Inches"] <= 13.3) & (d["Weight (kg)"] > 2.5),
+    "large screen (>=17 in) but light (<1.5 kg)": lambda d: (d["Inches"] >= 17) & (d["Weight (kg)"] < 1.5),
+    "Netbook with 16 GB RAM or more": lambda d: (d["TypeName"] == "Netbook") & (d["RAM (GB)"] >= 16),
+    "Gaming/Workstation under 500 euro": lambda d: d["TypeName"].isin(["Gaming", "Workstation"]) & (d["Price (Euro)"] < 500),
+    "32 GB RAM or more under 1000 euro": lambda d: (d["RAM (GB)"] >= 32) & (d["Price (Euro)"] < 1000),
+}
+
+
+def flag_suspicious(df):
+    """Flag rows that break a physical or price plausibility rule. Rows are flagged, never removed.
+
+    Returns (any_rule, per_rule) where `any_rule` is a Series of True/False and `per_rule` has a column per rule.
+    """
+    per_rule = pd.DataFrame({name: rule(df) for name, rule in SUSPICIOUS_RULES.items()})
+    return per_rule.any(axis=1), per_rule
