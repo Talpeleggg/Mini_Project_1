@@ -24,3 +24,12 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Observation to check by the student:** the 208 two-drive `Memory` strings are exactly the 208 strings with a double space; confirm this when writing the parser in Q2 B.
 - **Not verified yet:** why the prices differ inside a near-duplicate pair (unknown, stated as such).
 
+### 2026-11-20 and 2026-11-21, task `t_q2a` (Q2 A, data audit), step 3
+
+- **What the AI did:** added sections 5 (ranges and units) and 6 (consistency between columns), with Hebrew helper comments (`# HE:`).
+- **Decisions applied:** `q_audit` (ranges, units, consistency checks) and `q_issues` (implausible values or models are flagged and examined, not deleted).
+- **How it was verified:** executed a temporary copy and copied every number in the markdown from the output. The claim from step 2 (the 208 strings with two drives are exactly the 208 strings with a double space) was checked separately: 208, 208, 208 in both, 0 different.
+- **A first draft was wrong:** an exploratory version of the storage check used a faulty parser and reported that no model name matched the storage. It was caught because the result was implausible (0 of 151), and the parser was rewritten. The notebook contains only the corrected version.
+- **Observation to check by the student:** the 3 Lenovo B51-80 rows ("1008GB" in the name, "1.0TB Hybrid" in `Memory`) are a unit convention, not a contradiction. Look at them in the data yourself.
+- **Not verified:** the plausible ranges are our own assumptions about typical laptops, not taken from a source.
+
