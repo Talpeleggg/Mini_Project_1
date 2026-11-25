@@ -128,3 +128,10 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **What went wrong:** the 1 s runs crashed the stand-in bursting generator when no burst started (`np.concatenate` of an empty list); the stand-in now returns an empty spike train. The first accuracy figure had its legend over the lines; moved.
 - **Caveat recorded in the notebook:** 100% accuracy at 5 s reflects how different the stand-ins are; thresholds and accuracy must be recomputed on Part 1's simulation.
 
+### 2026-11-25, tasks `t_q1b` and `t_q1d`: automatic switch to Part 1's simulation, figure saving
+
+- **What the AI did:** the stand-in cell now checks whether `q1_models.py` contains the four contract functions (`make_rngs`, `simulate_regular`, `simulate_irregular`, `simulate_bursting`). If it does, every cell runs on Part 1's simulation through one function `make_trains(T, seed)`; if not, the stand-ins are used. Added `save_fig()` (decision `g_figs`: PNG, 200 dpi, to `figures/`), called for all 11 figures, which saves only when the data are real, never the stand-ins.
+- **How it was verified:** the notebook runs unchanged on the stand-ins (prints the data source, saves nothing). In a separate temporary folder, outside the repository, with a FAKE `q1_models.py` that follows the contract (written by the AI only for this test and then deleted), the whole notebook ran without errors, printed "Part 1's simulation", and saved the 11 PNG files.
+- **For Part 1:** the signatures must match the contract in `team_kit/CLAUDE.md` (`make_rngs(seed, n)`, `simulate_*(T, rng, rate_hz=...)`), and `simulate_bursting` must return an empty array when no burst starts in a short recording.
+- **Still needed after Part 1 delivers:** re-read every interpretation cell, because all numbers in them come from the stand-ins.
+
