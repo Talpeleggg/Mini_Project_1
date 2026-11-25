@@ -113,3 +113,10 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **What went wrong:** the first comparison figure used `density=True` with log-spaced bins, which inflated the narrow short-interval bins and made the bursting peak look huge; changed to the fraction of intervals per bin. The count of intervals outside 1 ms to 1 s showed that 18% of the stand-in bursting intervals are below 1 ms (no refractory period in the stand-in).
 - **Not done yet:** the construction diagram, and re-running on Part 1's simulation.
 
+### 2026-11-25, task `t_q1d` (Q1 D, realizations), step 1: variability between realizations
+
+- **What the AI did:** added a raster of 5 realizations per neuron, 1,000 realizations of 5 s with four properties each, a box plot with all points, and a table of median and 5th to 95th percentile per neuron and property, with a check of whether the three ranges overlap. Still on the stand-in neurons.
+- **Decisions applied (read from the board):** `d_n` (5 + 1,000), `d_props` (spike count, CV, LV, short-interval fraction), `d_plot` (box plot with all points).
+- **How it was verified:** exactly 1,000 runs per neuron and no `nan`; medians agree with the long-recording table of Q1 B step 4 (CV about 0.2, 1, 2.8); the AI looked at both figures.
+- **Not done yet:** classification rule on new simulations (`d_cls`) and accuracy by recording length (`d_dur`).
+
