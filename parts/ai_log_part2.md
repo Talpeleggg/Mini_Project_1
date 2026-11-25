@@ -120,3 +120,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **How it was verified:** exactly 1,000 runs per neuron and no `nan`; medians agree with the long-recording table of Q1 B step 4 (CV about 0.2, 1, 2.8); the AI looked at both figures.
 - **Not done yet:** classification rule on new simulations (`d_cls`) and accuracy by recording length (`d_dur`).
 
+### 2026-11-25, task `t_q1d` (Q1 D, realizations), step 2: classification rule and recording length
+
+- **What the AI did:** set two thresholds (CV and short-interval fraction) from the 1,000 training runs of step 1, wrote a three-way rule, tested it on 3,000 new runs with other seeds (confusion matrix), and measured accuracy for 1, 2, 5, 10 and 30 s recordings (500 new runs per neuron per length). Still on the stand-in neurons.
+- **Decisions applied:** `d_cls` (2-D view + simple threshold rule, evaluated on new simulations), `d_dur` (accuracy by length, one figure).
+- **How it was verified:** small tests of the rule on obvious values; test seeds differ from training seeds; 3,000 test rows; the AI looked at both figures.
+- **What went wrong:** the 1 s runs crashed the stand-in bursting generator when no burst started (`np.concatenate` of an empty list); the stand-in now returns an empty spike train. The first accuracy figure had its legend over the lines; moved.
+- **Caveat recorded in the notebook:** 100% accuracy at 5 s reflects how different the stand-ins are; thresholds and accuracy must be recomputed on Part 1's simulation.
+
