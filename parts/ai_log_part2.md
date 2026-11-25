@@ -105,3 +105,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **What was changed after looking:** the first return map had axes stretched down to 1e-6 by a few extreme stand-in intervals, so the axes were limited to 1 ms to 3 s.
 - **Not done yet:** a comparison figure on shared axes, the diagram of how each neuron is built, the numbers table, and re-running everything on Part 1's simulation.
 
+### 2026-11-25, task `t_q1b` (Q1 B, analysis), step 4: comparison figure and numbers table
+
+- **What the AI did:** before the step, read the student's choices directly from the decision board (collection `dec`) and found three differences from the code: `b_stats` on the board has no CV2 (the AI's chat summary had wrongly said the recommendation included it), `b_axis` bins are 1 ms to 1 s (code had up to 3 s), `b_fano` windows are 50 to 1000 ms (code had 10 ms to 10 s). The student chose to follow the board; the code was corrected. Then added one comparison figure (three ISI distributions on shared axes) and a numbers table for a 5 s and a 200 s recording.
+- **Decisions applied:** `b_figs` (comparison figure, table; the construction diagram is postponed because Part 1's model decisions are not made), `b_stats` (six measures, no CV2), `b_axis`, `b_fano`.
+- **How it was verified:** table checks (rates within 1 Hz of 10 on 200 s; CV and LV increase from regular to random to bursting; no CV2 column); the AI looked at the figures.
+- **What went wrong:** the first comparison figure used `density=True` with log-spaced bins, which inflated the narrow short-interval bins and made the bursting peak look huge; changed to the fraction of intervals per bin. The count of intervals outside 1 ms to 1 s showed that 18% of the stand-in bursting intervals are below 1 ms (no refractory period in the stand-in).
+- **Not done yet:** the construction diagram, and re-running on Part 1's simulation.
+
