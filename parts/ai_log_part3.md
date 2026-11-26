@@ -127,3 +127,20 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **AI choice to confirm:** the 64 GB laptop and the 24+ GB laptops are named "high leverage" and not "outliers", because neither rule flags them (they are rare configurations, section 4b). The student can change the wording.
 - **How it was verified:** a script compared every number of the markdown table with the table printed by the executed cell, and they match.
 - **What went wrong:** the first check script failed on a coding error of mine (it treated a list as text); I fixed the script and ran it again.
+
+### Section 9 (the student's text, to be merged into AI_USAGE.md at integration)
+
+בסעיף ד׳ בדקנו התאמה פיזיקלית (משקל מול גודל מסך וסוג), וסומנו 31 מחשבים. שניים מהם (שניהם מהדגם Alienware 17) לא תאמו לשורות האחרות של אותו דגם:
+
+1. מסך של 15.6 אינץ' (ב־13 השורות האחרות של Alienware 17 המסך הוא 17.3 אינץ').
+2. סוג Notebook, בעוד שכל שאר השורות של הדגם הן Gaming.
+
+קלוד סימן את שתי השורות כמוזרות והעיר שלא בדקנו מה המקור שלהן. בעקבות זה חשדתי שהחריגות הן תוצאה של סינון לא נכון בניקוי שטל עשתה בשלב המוקדם, או שזו פשוט שגיאה בנתונים המקוריים. שאלתי גם אם החריגות חשובות לתוצאה הסופית.
+
+מה שמצאתי בפועל זה:
+
+1. שטל בדקה: חמישה כללי הגיון פיזיקליים (שסימנו מחשב אחד בלבד) וגם התאמה בין המפרט שכתוב בשם הדגם לעמודות: ה־RAM תאם ב־151 מתוך 151 שורות, והאחסון ב־148 מתוך 151 (שלוש החריגות הן הבדל בין 1,008 GB ל־1 TB). אבל היא לא בדקה את גודל המסך או את הסוג מול שם הדגם. הכלל "מסך קטן וכבד" מוגבל ל־13.3 אינץ' ומטה, ולכן 15.6 לא הפעיל אותו. זה מסביר למה זה לא נתפס, אבל לא מאיפה הגיעה השגיאה.
+
+כדי לאמת שמקור השגיאה לא מטל ביקשתי מקלוד להשוות את שתי השורות בקובץ הגולמי לטבלה הנקייה, ובדקתי בעצמי בטבלאות (שורות 458 ו־760 בCSV) ויצא שהערכים זהים. הניקוי משאיר את 15 העמודות המקוריות כמו שהן ולא מוחק שורות, ולכן זו לא תוצאה של הניקוי.
+
+לבסוף ההשערה שלי היא שהשגיאה בנתונים המקוריים (בגודל המסך או בתווית הסוג) אבל לא אימתי אותה מול מקור חיצוני.
