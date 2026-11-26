@@ -119,3 +119,11 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **What the student decided:** to keep the unusual observations in the analysis (`o_treat`). The student must read the text, change anything they do not agree with, and be able to explain it: it is a draft written by the AI.
 - **How it was verified:** every number in the text was compared by hand with the tables printed in the notebook (the fences, the counts of flagged laptops, the before-and-after table, the leverage shares, the price ratios and the two spreads of the log price).
 - **What went wrong:** nothing in this step. The statement about the two Alienware rows is a hypothesis (comparison with other rows of the same model) and is written as one.
+
+### 2026-11-26, task `t_q2d`, follow-up (table in the interpretation)
+
+- **What the AI did:** at the student's request, added the before-and-after table to the "What the analysis supports" part of the Q2 D interpretation, with columns named by what is removed.
+- **What the student decided:** to put the table in the interpretation text, and to name the columns by the kind of outlier removed.
+- **AI choice to confirm:** the 64 GB laptop and the 24+ GB laptops are named "high leverage" and not "outliers", because neither rule flags them (they are rare configurations, section 4b). The student can change the wording.
+- **How it was verified:** a script compared every number of the markdown table with the table printed by the executed cell, and they match.
+- **What went wrong:** the first check script failed on a coding error of mine (it treated a list as text); I fixed the script and ran it again.
