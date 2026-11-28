@@ -23,3 +23,21 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 | 28.11 | Contract test with Part 2 | Ran `Q1_part2_analysis.ipynb` on a copy of the repository | – | It switches to "Part 1's simulation" and runs, except one sanity check in Part 2's cell 16: `np.all(curves["Bursting"] > 2)`. Our bursting neuron's Fano factor falls from ~3.3 (50 ms window) to ~1.2–1.5 (1 s), because burst onsets are quasi-regular (decision `a_bo`, k = 4). The stand-in had Poisson onsets. Reported to Part 2; Part 2's file not edited |
 | 28.11 | `t_q1int` Q1 interpretation (decision `d_report`) | Drafted the interpretation chapter (6 short parts: assumptions, rate alone, what distinguishes, variability, how to tell apart from observations, trustworthiness and limits) and a code cell that computes the numbers it quotes | – | Before writing, ran Part 2's notebook on the real models (on a copy): CV 0.05 / 0.95 / 1.89, its threshold rule 100 % correct on 3,000 new 5 s runs. Every number in the text matches the table computed in the notebook; notebook runs from scratch, 20 / 20 checks pass |
 | 28.11 | `t_q2e` Q2 report (decisions `r_form`, `r_struct`, `r_lim`, `g_verify`) | First proposed typing the report as text with an `assert` to warn when numbers change | **Asked for the text to update itself instead.** The AI then wrote every paragraph with numbers as code that builds the text from Part 3's results (`IPython.display.Markdown`), with wording chosen by rules (e.g. "clear premium" only if the whole interval is above 1) and `assert`s for claims a rule cannot rephrase; an explanation of this choice is at the top of the report. Summary, 4 findings (observed / supported / cannot conclude, with figures), limitations, README draft | Ran Part 3's notebook on a copy and read its result tables before writing. Report runs from scratch with no errors. Helper functions tested on known inputs. One generated sentence was wrong at first: the "small groups" list showed only 2 GB, because it read the table where 24/32/64 GB were already merged; changed to the original RAM-level table |
+
+## Section 9 draft (written by the student)
+
+*Written by the student in Hebrew; translated to English with AI. To be moved into section 9 of `AI_USAGE.md` at integration.*
+
+**Example 1: the report text**
+- The AI suggested writing the report as fixed text, with a check that warns when a number changes; but when the data change, the text itself does not change.
+- What bothered me: if something changes, nothing in the text changes and it stays exactly the same, so the text can become wrong after the data change.
+- I suggested making the text change dynamically.
+- The result is code that changes dynamically and prints the text according to the results of the analysis.
+- The AI suggested a warning that pops up a note when the analysis changes, but that was not enough for me: I wanted the text to change dynamically and work by itself.
+
+**Example 2: the number of checks**
+- The AI suggested a long list of checks, 9 checks on the board, more than required, and a long implementation.
+- What bothered me: it suggested things that might be unnecessary and add no value.
+- I suggested sticking to the requirements of the assignment and not overloading the code.
+- The result: three main checks marked at the top of the notebook, one of each type the assignment requires. All the others are defined as supporting checks, and one unnecessary check was deleted.
+- The AI suggested dropping the KS test and the zero/single-spike check as well. Here I stopped it and asked whether these were important; that is, it wanted to cut important things too, so I kept the KS test.
