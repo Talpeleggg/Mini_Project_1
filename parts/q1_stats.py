@@ -1,6 +1,6 @@
 """TEMPORARY helper module. Owner: Part 2.
 
-Will hold: isi, cv, lv, fano, burst_fraction, isi_lag1_corr (each returns nan when undefined).
+Will hold: isi, cv, lv, fano, short_isi_fraction, next_interval_corr (each returns nan when undefined).
 
 Other parts import from here. Do not write code here until the related decisions are made on the board.
 At integration the functions are copied into the final notebook and this file is deleted.
@@ -54,7 +54,7 @@ def lv(spikes):
     return float(3.0 * np.mean(((a - b) / s) ** 2))
 
 
-def isi_lag1_corr(spikes):
+def next_interval_corr(spikes):
     """Serial correlation between each interval and the next one (does a short one follow a long one?)."""
     x = isi(spikes)
     if len(x) < 3:
@@ -67,7 +67,7 @@ def isi_lag1_corr(spikes):
     return float(np.corrcoef(a, b)[0, 1])
 
 
-def burst_fraction(spikes, threshold=0.010):
+def short_isi_fraction(spikes, threshold=0.010):
     """Fraction of intervals shorter than `threshold` seconds (default 10 ms): the share of 'burst-like' intervals."""
     x = isi(spikes)
     if len(x) == 0:
@@ -75,9 +75,9 @@ def burst_fraction(spikes, threshold=0.010):
     return float(np.mean(x < threshold))
 
 
-def burst_curve(spikes, thresholds):
+def short_isi_curve(spikes, thresholds):
     """Decision b_thr: the short-interval fraction for every threshold in `thresholds` (seconds)."""
-    return np.array([burst_fraction(spikes, t) for t in thresholds])
+    return np.array([short_isi_fraction(spikes, t) for t in thresholds])
 
 
 def window_counts(spikes, T, window):

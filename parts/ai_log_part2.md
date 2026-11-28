@@ -142,3 +142,7 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Why:** CV2 and LV both compare neighbouring intervals and give almost the same answer on our constant-rate neurons (Poisson: 1.001 for both). CV2 was never in the numbers table (the board's `b_stats` did not include it), so it was only used in tests.
 - **How it was verified:** all code cells of `Q1_part2_analysis.ipynb` run from start to end on the stand-in neurons with every assert passing; no mention of `cv2` remains in the code or notebook.
 - **What is not done:** the Hebrew explanation files outside git (`explain_decisions_he.md`, the Claude Docs knowledge doc) may still mention CV2.
+
+- **Rename (2026-11-28):** `isi_lag1_corr` was renamed `next_interval_corr` (the name was unclear to the student) in `q1_stats.py` and the notebook; behaviour unchanged.
+- **Rename (2026-11-28):** `burst_fraction` was renamed `short_isi_fraction` (it measures short intervals, not proven bursts); behaviour unchanged.
+- **Rename (2026-11-28):** `burst_curve` renamed `short_isi_curve` to match `short_isi_fraction`; behaviour unchanged.
