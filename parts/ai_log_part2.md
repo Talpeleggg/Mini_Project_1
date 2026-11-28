@@ -135,3 +135,10 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **For Part 1:** the signatures must match the contract in `team_kit/CLAUDE.md` (`make_rngs(seed, n)`, `simulate_*(T, rng, rate_hz=...)`), and `simulate_bursting` must return an empty array when no burst starts in a short recording.
 - **Still needed after Part 1 delivers:** re-read every interpretation cell, because all numbers in them come from the stand-ins.
 
+
+### 2026-11-28, task `t_q1b`: CV2 removed from `q1_stats.py`
+
+- **What the AI did:** at the student's decision, deleted `cv2` from `q1_stats.py` and from the notebook (import, hand-computed test, regular and Poisson tests, edge-case loop, interpretation text, and the "no CV2 column" check). LV stays as the single neighbouring-interval measure.
+- **Why:** CV2 and LV both compare neighbouring intervals and give almost the same answer on our constant-rate neurons (Poisson: 1.001 for both). CV2 was never in the numbers table (the board's `b_stats` did not include it), so it was only used in tests.
+- **How it was verified:** all code cells of `Q1_part2_analysis.ipynb` run from start to end on the stand-in neurons with every assert passing; no mention of `cv2` remains in the code or notebook.
+- **What is not done:** the Hebrew explanation files outside git (`explain_decisions_he.md`, the Claude Docs knowledge doc) may still mention CV2.

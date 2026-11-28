@@ -54,18 +54,6 @@ def lv(spikes):
     return float(3.0 * np.mean(((a - b) / s) ** 2))
 
 
-def cv2(spikes):
-    """CV2 (Holt): mean of 2|a-b|/(a+b) over neighbouring interval pairs."""
-    x = isi(spikes)
-    if len(x) < 2:
-        return np.nan
-    a, b = x[:-1], x[1:]
-    s = a + b
-    if np.any(s == 0):
-        return np.nan
-    return float(np.mean(2.0 * np.abs(a - b) / s))
-
-
 def isi_lag1_corr(spikes):
     """Serial correlation between each interval and the next one (does a short one follow a long one?)."""
     x = isi(spikes)
