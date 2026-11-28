@@ -146,3 +146,12 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Rename (2026-11-28):** `isi_lag1_corr` was renamed `next_interval_corr` (the name was unclear to the student) in `q1_stats.py` and the notebook; behaviour unchanged.
 - **Rename (2026-11-28):** `burst_fraction` was renamed `short_isi_fraction` (it measures short intervals, not proven bursts); behaviour unchanged.
 - **Rename (2026-11-28):** `burst_curve` renamed `short_isi_curve` to match `short_isi_fraction`; behaviour unchanged.
+
+### 2026-11-28, tasks `t_q1b` and `t_q1d`: first run on Part 1's models, one failed check, threshold chosen
+
+- **What the AI did:** ran the whole notebook on Part 1's simulation (`q1_models.py`, delivered today). One check failed: in the Fano curve the bursting neuron had to be above 2 for every window size, but with Part 1's model it falls from 3.3 (50 ms window) to 1.2 (1 s window). That check had been calibrated on the stand-in neurons, whose bursts start at random times. Part 1's bursts have a minimum quiet period, so they arrive at a nearly regular pace and long windows hold a similar number of bursts each time.
+- **Decision (student):** the model is right and the check was wrong. The AI did not change the number 2 to make the check pass. The check now states what Part 1's model is expected to do: above 2 for windows up to 250 ms, and above 1 for all windows.
+- **Threshold:** from the threshold curve on Part 1's data the student chose 8 ms as the final short-interval threshold (the first point where the bursting neuron is on its plateau, 0.75, while the random neuron is still low, 0.056). The provisional 10 ms was replaced.
+- **Rewritten:** all interpretation cells that held stand-in numbers (steps 2, 3, 4, Q1 D steps 1 and 2).
+- **How it was verified:** the notebook runs from start to end with every check passing; the AI looked at the figures (histograms, return map, threshold curve, scatter plot) before writing the text.
+- **Not done:** the construction diagram, and moving the notebook's helper functions to the top at integration.

@@ -8,16 +8,10 @@ At integration the functions are copied into the final notebook and this file is
 
 import numpy as np
 
-# HE: ----------------------------------------------------------------------------
-# HE: פונקציות הסטטיסטיקה של Q1 ב׳ (החלטות b_stats, b_thr, b_fano, b_bin).
-# HE: קלט: spikes = מערך זמני פעימות בשניות (עולה), T = אורך ההקלטה בשניות.
-# HE: כלל: מדד שאי אפשר לחשב (מעט מדי פעימות, חלוקה באפס) מחזיר np.nan, ולא שגיאה.
-# HE: ----------------------------------------------------------------------------
 
 
 def isi(spikes):
     """Inter-spike intervals in seconds: the gaps between consecutive spikes."""
-    # HE: diff מחסרת כל זמן מהקודם לו, וכך מתקבלים המרווחים. n פעימות נותנות n-1 מרווחים.
     return np.diff(np.asarray(spikes, dtype=float))
 
 
@@ -35,7 +29,6 @@ def mean_isi(spikes):
 def cv(spikes):
     """Coefficient of variation of the intervals: std / mean (sample std, ddof=1). Needs at least 2 intervals."""
     x = isi(spikes)
-    # HE: מחשבים סטיית תקן רק אם יש לפחות שני מרווחים, והממוצע לא אפס.
     if len(x) < 2 or x.mean() == 0:
         return np.nan
     return float(x.std(ddof=1) / x.mean())
@@ -47,7 +40,6 @@ def lv(spikes):
     if len(x) < 2:
         return np.nan
     a, b = x[:-1], x[1:]
-    # HE: לכל זוג מרווחים שכנים: ((a-b)/(a+b))^2. מכפילים ב-3 וממצעים (חלקי מספר המרווחים פחות 1).
     s = a + b
     if np.any(s == 0):
         return np.nan
@@ -60,8 +52,6 @@ def next_interval_corr(spikes):
     if len(x) < 3:
         return np.nan
     a, b = x[:-1], x[1:]
-    # HE: אם כל המרווחים זהים אין שונות ולכן אין מתאם (חלוקה באפס). מחזירים nan.
-    # HE: בגלל שגיאות עיגול של מספרים עשרוניים, "זהים" פירושו שהשונות זעירה ביחס לממוצע, ולא בדיוק אפס.
     if a.std() <= 1e-9 * x.mean() or b.std() <= 1e-9 * x.mean():
         return np.nan
     return float(np.corrcoef(a, b)[0, 1])
@@ -85,7 +75,6 @@ def window_counts(spikes, T, window):
     n_windows = int(np.floor(T / window + 1e-9))
     if n_windows < 1:
         return np.array([], dtype=int)
-    # HE: histogram סופר כמה פעימות נופלות בכל חלון. edges הם קצוות החלונות.
     edges = np.arange(n_windows + 1) * window
     counts, _ = np.histogram(spikes, bins=edges)
     return counts
