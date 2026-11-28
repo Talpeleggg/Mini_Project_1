@@ -164,3 +164,10 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **How it was verified:** all code cells of the notebook run; the checks include that `CPU_family` equals `CPU_tier` for every Core i3/i5/i7 row, that the Celeron row from line 691 gets `Celeron`, that no processor is left without a family, and that `clean()` equals the step-by-step table. `load_clean()` returns (1275, 33) in a fresh process.
 - **What went wrong:** two mistakes of the AI while editing the notebook were caught by running it (a literal `\n` in a test line, and the old shape check still saying 32).
 - **For Part 3:** a column was added; no existing column changed.
+
+### 2026-11-28, task `t_q1b`: step 5, the construction diagram
+
+- **What the AI did:** added step 5 to `Q1_part2_analysis.ipynb` (an intro, one code cell and an interpretation cell): one row per neuron, boxes and arrows, showing the recipe of Part 1's simulation. The numbers are read from the constants in `q1_models.py`, so the diagram follows the code. The student asked for the simplest form.
+- **How it was verified:** the cell asserts that the numbers in the diagram give the mean rate of 10 Hz (4 spikes per burst divided by the 400 ms cycle, and cycle = burst length + mean quiet gap 385 ms). The whole notebook runs from start to end and the AI looked at the rendered figure.
+- **What went wrong:** a `sed` edit of the notebook file produced invalid JSON once (a real newline inside a string); the next run caught it and it was repaired.
+- **Student decision still open:** whether the diagram style is final.
