@@ -101,6 +101,26 @@ def cpu_tier(cpu_type):
     return tier
 
 
+# Processor families, matched against the start of CPU_Type (first match wins). Added 2026-11-28 because the
+# CPU_tier value "Other" mixes many different processors (Celeron, Pentium, Atom, AMD...).
+CPU_FAMILY_RULES = [
+    (r"^Core i3", "Core i3"), (r"^Core i5", "Core i5"), (r"^Core i7", "Core i7"), (r"^Core M", "Core M"),
+    (r"^Celeron", "Celeron"), (r"^Pentium", "Pentium"), (r"^Atom", "Atom"), (r"^Xeon", "Xeon"),
+    (r"^A\d+-Series", "AMD A-Series"), (r"^E-Series", "AMD E-Series"), (r"^FX", "AMD FX"),
+    (r"^Ryzen", "AMD Ryzen"), (r"^Cortex", "Samsung Cortex"),
+]
+
+
+def cpu_family(cpu_type):
+    """Processor family from the start of CPU_Type: Core i3/i5/i7, Core M, Celeron, Pentium, Atom, Xeon, AMD..."""
+    family = pd.Series(np.nan, index=cpu_type.index, dtype=object)
+    for pattern, name in CPU_FAMILY_RULES:
+        family = family.where(family.notna() | ~cpu_type.str.match(pattern), name)
+    unknown = sorted(cpu_type[family.isna()].unique())
+    assert not unknown, f"processors without a family: {unknown}"
+    return family
+
+
 def log_price(price):
     """Natural logarithm of the price in euro (the price must be positive)."""
     assert (price > 0).all(), "log needs positive prices"
@@ -165,6 +185,7 @@ def clean(df):
     out["Screen_pixels"] = screen_pixels(out["ScreenResolution"])
     out["Touchscreen"] = has_touchscreen(out["ScreenResolution"])
     out["CPU_tier"] = cpu_tier(out["CPU_Type"])
+    out["CPU_family"] = cpu_family(out["CPU_Type"])
     out["log_price"] = log_price(out["Price (Euro)"])
     out["Dedicated_GPU"] = dedicated_gpu(out["GPU_Company"])
     out["Company_grouped"] = group_rare(out["Company"])
@@ -192,6 +213,7 @@ COLUMN_DICTIONARY = {
     "Screen_pixels": ("screen width times height in pixels", "st_extra"),
     "Touchscreen": ("True when the screen is a touchscreen", "st_extra"),
     "CPU_tier": ("Core i3, Core i5, Core i7 or Other", "st_extra"),
+    "CPU_family": ("processor family (Core i3/i5/i7, Core M, Celeron, Pentium, Atom, Xeon, AMD A/E-Series, FX, Ryzen, Samsung Cortex); splits the mixed Other group of CPU_tier", "st_extra"),
     "log_price": ("natural logarithm of the price in euro", "st_extra, tr"),
     "Dedicated_GPU": ("True for a Nvidia or AMD graphics card (approximation by company)", "st_extra"),
     "Company_grouped": ("company, with companies below 10 laptops grouped as Other", "rare"),

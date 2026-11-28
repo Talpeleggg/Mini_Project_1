@@ -155,3 +155,12 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **Rewritten:** all interpretation cells that held stand-in numbers (steps 2, 3, 4, Q1 D steps 1 and 2).
 - **How it was verified:** the notebook runs from start to end with every check passing; the AI looked at the figures (histograms, return map, threshold curve, scatter plot) before writing the text.
 - **Not done:** the construction diagram, and moving the notebook's helper functions to the top at integration.
+
+### 2026-11-28, task `t_q2b`: new column `CPU_family`
+
+- **What the AI did:** the student pointed at line 691 of the CSV (a Celeron laptop with `CPU_tier` = `Other`) and at line 1247 (`256GB SSD + 1TB HDD` = 1256 GB). The AI explained that neither was a code error: `CPU_tier` is defined as Core i3 / i5 / i7 and everything else is `Other` (203 laptops: Celeron 78, Pentium 30, Atom 13, AMD 60 and others), and 1256 is computed (256 + 1 TB counted as 1000 GB), not written in the file.
+- **Decisions (student):** keep `CPU_tier` as it is and add a new column `CPU_family` that splits `Other` (so Part 3, which uses `CPU_tier`, is not broken); keep 1 TB = 1000 GB.
+- **What the AI changed:** `cpu_family()` and its rules in `q2_clean.py`, the new column in `clean()` and in `COLUMN_DICTIONARY`, and the notebook `Q2_part2_cleaning.ipynb` (new validation checks, a unit test, and the shape 1275 x 32 became 1275 x 33, 17 new columns became 18).
+- **How it was verified:** all code cells of the notebook run; the checks include that `CPU_family` equals `CPU_tier` for every Core i3/i5/i7 row, that the Celeron row from line 691 gets `Celeron`, that no processor is left without a family, and that `clean()` equals the step-by-step table. `load_clean()` returns (1275, 33) in a fresh process.
+- **What went wrong:** two mistakes of the AI while editing the notebook were caught by running it (a literal `\n` in a test line, and the old shape check still saying 32).
+- **For Part 3:** a column was added; no existing column changed.
