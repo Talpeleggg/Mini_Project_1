@@ -171,3 +171,17 @@ For every task add: date, task id, what the AI did, what the student decided, ho
 - **How it was verified:** the cell asserts that the numbers in the diagram give the mean rate of 10 Hz (4 spikes per burst divided by the 400 ms cycle, and cycle = burst length + mean quiet gap 385 ms). The whole notebook runs from start to end and the AI looked at the rendered figure.
 - **What went wrong:** a `sed` edit of the notebook file produced invalid JSON once (a real newline inside a string); the next run caught it and it was repaired.
 - **Student decision still open:** whether the diagram style is final.
+
+### 2026-11-28, task `t_q1d`: three figures improved after the student ran the notebook herself
+
+- **What happened:** the student ran the notebook and said three figures of Q1 D looked odd, mostly the accuracy by recording length (it looked like one line and it was unclear what it showed).
+- **What the AI found and changed:** in that plot all values are about 1.0, so the three lines were drawn on top of each other on a 0 to 1 axis. The axis is now zoomed (97% to 100%, stated in the title), the three lines are shifted slightly sideways, and a note shows that at 1 s 0.3% of the runs had too few spikes. The scatter plot got labels for its three regions and its legend moved out of the way. The box plot got a line explaining the dots, the box and the median.
+- **How it was verified:** the whole notebook runs and the AI looked at the three rendered figures. The numbers are unchanged; only the drawing changed.
+- **Note:** the student's own run saved the outputs inside the notebook file. Notebooks are stored without outputs, so the outputs must be cleared before committing.
+
+### 2026-11-28, task `t_q1b`: choice of figures (10 of 12)
+
+- **What the AI did:** put all 12 figures of Q1 B and D on one overview image and listed, for each, what it shows and which requirement of the assignment it answers. The AI recommended leaving out two: the per-neuron ISI histograms (the comparison figure shows the same on one axis) and the rate in 100 ms bins (least informative).
+- **Decision (student):** 10 figures, without those two.
+- **What the AI changed:** removed the two figure cells from `Q1_part2_analysis.ipynb` (the cell that defines the interval bins and counts the intervals outside the range stays, because the comparison figure uses the bins), updated the step 2 and step 3 text, and deleted the two PNG files from `figures/`.
+- **How it was verified:** the notebook runs from start to end and produces 10 figures.
